@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="keywords" content="heart failure, HFpEF, BREATH2, preserved ejection fraction, ejection fraction, left ventricular dysfunction, diastolic dysfunction, systolic heart failure, congestive heart failure, NYHA classification, BNP, NT-proBNP, echocardiography, cardiac remodeling, pulmonary congestion, fluid overload, cardiovascular disease, cardiac output, preload, afterload, heart failure treatment, diuretics, ACE inhibitors, beta blockers, aldosterone antagonists, ARNI, SGLT2 inhibitors, exercise intolerance, fatigue in heart failure, breathlessness, edema, atrial fibrillation, myocardial infarction, coronary artery disease, cardiac MRI, natriuretic peptides, guideline-directed therapy, readmission prevention, cardiac rehabilitation, HF hospitalization, chronic heart failure, acute decompensated heart failure, mortality risk, HF prognosis, cardiac biomarkers, comorbidities in HF, frailty in HF, dyspnea, EF measurement, HFpEF criteria">
+  <meta name="description" content="BREATH₂ score calculator">
+  <title>BREATH₂ Score</title>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #fff8f0;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      font-size: 16px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border: 4px solid #DA291C;
+    }
+
+    h1 {
+      color: #DA291C;
+      text-align: center;
+      font-size: 32px;
+    }
+
+    .form-group {
+      margin: 20px 0;
+    }
+
+    label {
+      font-size: 18px;
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .options-container {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .option {
+      padding: 12px;
+      border: 3px solid #FFC72C;
+      border-radius: 10px;
+      text-align: center;
+      flex-grow: 1;
+      cursor: pointer;
+      transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+      margin: 0 5px;
+      background-color: #fff5d7;
+    }
+
+    .option:hover {
+      transform: scale(1.05);
+    }
+
+    .option.selected {
+      background-color: #DA291C;
+      color: white;
+      border-color: #DA291C;
+    }
+
+    #results {
+      font-size: 18px;
+      margin-top: 30px;
+      background: #fff5d7;
+      padding: 20px;
+      border-radius: 10px;
+      border: 3px solid #FFC72C;
+      text-align: center;
+    }
+
+    #results span {
+      color: #DA291C;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .back-button {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      background-color: #FFC72C;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .image-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>BREATH₂ Score</h1>
+    <form id="breathForm">
+      <div class="form-group">
+        <label>B: Elevated NT-proBNP/BNP (≥125/35)</label>
+        <div class="options-container">
+          <div class="option" data-value="2">Yes</div>
+          <div class="option selected" data-value="0">No</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>R: Cardiothoracic ratio (CTR) ≥ 50%</label>
+        <div class="options-container">
+          <div class="option" data-value="1">Yes</div>
+          <div class="option selected" data-value="0">No</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>E: Age ≥ 65</label>
+        <div class="options-container">
+          <div class="option" data-value="2">Yes</div>
+          <div class="option selected" data-value="0">No</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>A: Atrial fibrillation (paroxysmal or persistent)</label>
+        <div class="options-container">
+          <div class="option" data-value="1">Yes</div>
+          <div class="option selected" data-value="0">No</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>T: History of coronary artery disease</label>
+        <div class="options-container">
+          <div class="option" data-value="1">Yes</div>
+          <div class="option selected" data-value="0">No</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>H: Anemia (Hb &lt;13/12 g/dL male/female)</label>
+        <div class="options-container">
+          <div class="option" data-value="1">Yes</div>
+          <div class="option selected" data-value="0">No</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>H: Left ventricular high voltage on ECG (RV5+SV1 ≥ 3.5 mV)</label>
+        <div class="options-container">
+          <div class="option" data-value="1">Yes</div>
+          <div class="option selected" data-value="0">No</div>
+        </div>
+      </div>
+    </form>
+
+    <div id="results">
+      <h2>Total Score</h2>
+      <p><span id="breathScore">0</span> / 9 points</p>
+      <p>Risk Category: <span id="riskCategory">Low</span></p>
+      <p>Probability of HFpEF: <span id="probability">4%</span></p>
+    </div>
+
+    <div class="image-container">
+      <img src="p1.avif" alt="BREATH2" width="99%" height="auto">
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.option').forEach(option => {
+      option.addEventListener('click', function () {
+        let siblings = this.parentNode.querySelectorAll('.option');
+        siblings.forEach(sib => sib.classList.remove('selected'));
+        this.classList.add('selected');
+        calculateBREATH();
+      });
+    });
+
+    function calculateBREATH() {
+      const selectedOptions = document.querySelectorAll('.option.selected');
+      let score = 0;
+      selectedOptions.forEach(opt => {
+        score += parseInt(opt.getAttribute('data-value'));
+      });
+      document.getElementById('breathScore').innerText = score;
+
+      let riskLevel = '';
+      let probability = '';
+
+      if (score <= 1) {
+        riskLevel = 'Low';
+        probability = '4%';
+      } else if (score <= 3) {
+        riskLevel = 'Low';
+        probability = '19%';
+      } else if (score <= 5) {
+        riskLevel = 'Moderate';
+        probability = '50%';
+      } else if (score <= 7) {
+        riskLevel = 'High';
+        probability = '77%';
+      } else {
+        riskLevel = 'Very High';
+        probability = '93%';
+      }
+
+      document.getElementById('riskCategory').innerText = riskLevel;
+      document.getElementById('probability').innerText = probability;
+    }
+
+    calculateBREATH();
+  </script>
+</body>
+</html>
